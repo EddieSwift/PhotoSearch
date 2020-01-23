@@ -16,11 +16,14 @@ class PhotoTableViewController: UITableViewController {
     private var searches = [String?]()
     private let networkManager = NetworkManager()
     private var allResults: [SearchResult] = []
-    
+    private let reuseIdentifier = "PhotoTableViewCell"
+
+    // MARK: - Lifecycle Methods
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        PhotoTableViewCell.register(in: tableView)
+        tableView.register(PhotoTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         tableView.allowsSelection = false
         
@@ -38,25 +41,52 @@ class PhotoTableViewController: UITableViewController {
         searchBar.delegate = self
         navigationItem.titleView = searchBar
     }
-    
-    
-    
-    
-    // MARK: - TableViewDataSource
-    
+
+    // MARK: - Network Methods
+
+    private func getPhoto() {
+        let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
+        searchBar.addSubview(activityIndicator)
+        activityIndicator.frame = searchBar.bounds
+        activityIndicator.startAnimating()
+
+        networkManager.searchFlickr(for: searchBar.text!) { searchResults in
+            activityIndicator.removeFromSuperview()
+
+            switch searchResults {
+            case .error(let error) :
+                print("Error Searching: \(error)")
+            case .results(let results):
+                print("Found \(results.searchResult.count) matching \(results.searchTerm)")
+                print(results)
+                self.allResults.append(results)
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+}
+// MARK: - UITableViewDataSource
+
+extension PhotoTableViewController {
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searches.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = Bundle.main.loadNibNamed("PhotoTableViewCell", owner: self, options: nil)?.first as! PhotoTableViewCell
-        
+
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
+                                                       for: indexPath) as? PhotoTableViewCell else {
+                                                        fatalError("Cell error")
+        }
+
         cell.configureWith(searchResult: allResults[indexPath.row])
-        
+
         return cell
     }
-    
 }
 
 // MARK: - UITableViewDelegate
@@ -64,7 +94,7 @@ class PhotoTableViewController: UITableViewController {
 extension PhotoTableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 100
     }
 }
 
@@ -75,27 +105,8 @@ extension PhotoTableViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searches.append(searchBar.text)
         
-        let activityIndicator = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.medium)
-        searchBar.addSubview(activityIndicator)
-        activityIndicator.frame = searchBar.bounds
-        activityIndicator.startAnimating()
-        
-        networkManager.searchFlickr(for: searchBar.text!) { searchResults in
-            activityIndicator.removeFromSuperview()
-            
-            switch searchResults {
-            case .error(let error) :
-                print("Error Searching: \(error)")
-            case .results(let results):
-                print("Found \(results.searchResult.count) matching \(results.searchTerm)")
-                print(results)
-                self.allResults.append(results)
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-        }
+        getPhoto()
+
         searchBar.text = nil
     }
     

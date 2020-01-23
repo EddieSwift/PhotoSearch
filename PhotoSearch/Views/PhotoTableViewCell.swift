@@ -9,21 +9,57 @@
 import UIKit
 
 class PhotoTableViewCell: UITableViewCell {
-    
-    public static let identifier = "PhotoTableViewCell"
-    private static let nibName   = "PhotoTableViewCell"
-    
-    @IBOutlet var photoImageView: UIImageView!
-    @IBOutlet weak var searchLabel: UILabel!
-    
-    public static func register(in tableView: UITableView) {
-        let nib = UINib.init(nibName: nibName, bundle: Bundle.main)
-        tableView.register(nib, forCellReuseIdentifier: identifier)
+
+    // MARK: - Properties
+
+    private var searchLabel: UILabel!
+    private var photoImageView: UIImageView!
+
+    // MARK: - Init and Configure Methods
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
     }
-    
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
     func configureWith(searchResult: SearchResult) {
         searchLabel.text = searchResult.searchTerm
         photoImageView.image = searchResult.searchResult[0].thumbnail
     }
-    
+
+    // MARK: - Setup UI Methods
+
+    private func setupUI() {
+        setupSearchLabelUI()
+        setupPhotoImageUI()
+    }
+
+    private func setupSearchLabelUI() {
+        searchLabel = UILabel()
+        contentView.addSubview(searchLabel)
+        searchLabel.font = UIFont.systemFont(ofSize: 18, weight: .regular)
+        searchLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            searchLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            searchLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 100),
+            searchLabel.heightAnchor.constraint(equalToConstant: 40),
+            searchLabel.widthAnchor.constraint(equalToConstant: 100)
+        ])
+    }
+
+    private func setupPhotoImageUI() {
+        photoImageView = UIImageView()
+        contentView.addSubview(photoImageView)
+        photoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            photoImageView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            photoImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            photoImageView.heightAnchor.constraint(equalToConstant: 90),
+            photoImageView.widthAnchor.constraint(equalToConstant: 90)
+        ])
+    }
 }
