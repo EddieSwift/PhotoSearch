@@ -60,8 +60,9 @@ class PhotoTableViewController: UITableViewController {
             switch searchResults {
             case .error(let error) :
                 print("Error Searching: \(error)")
+                self.notFoundImageAlert()
             case .results(let results):
-                
+
                 let photoResult = PhotoResult()
                 photoResult.searchTerm = results.searchTerm
                 photoResult.photoURL = results.searchResult[0].flickrImageURL()
@@ -76,7 +77,20 @@ class PhotoTableViewController: UITableViewController {
             }
         }
     }
+
+    // MARK: - Alert metod
+
+    private func notFoundImageAlert() {
+        let alert = UIAlertController(title: "Warning",
+                                      message: "Image wasn't found. Try again, please.",
+                                      preferredStyle: .alert)
+
+        let cancleAction = UIAlertAction(title: "Ok", style: .cancel)
+        alert.addAction(cancleAction)
+        present(alert, animated: true)
+    }
 }
+
 // MARK: - UITableViewDataSource
 
 extension PhotoTableViewController {
