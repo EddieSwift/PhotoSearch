@@ -8,8 +8,6 @@
 
 import UIKit
 
-let apiKey = "8e9162350d5062f8ee2b715b9aba102c"
-
 class NetworkManager {
     enum Error: Swift.Error {
         case unknownAPIResponse
@@ -116,13 +114,13 @@ class NetworkManager {
         }.resume()
     }
     
-    private func flickrSearchURL(for searchTerm:String) -> URL? {
+    private func flickrSearchURL(for searchTerm: String) -> URL? {
         guard let escapedTerm = searchTerm.addingPercentEncoding(withAllowedCharacters: CharacterSet.alphanumerics) else {
             return nil
         }
         
-        let URLString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(apiKey)&text=\(escapedTerm)&per_page=1&format=json&nojsoncallback=1"
+        let url = "\(Constants.NetworkURL.baseURL)?method=flickr.photos.search&api_key=\(Constants.NetworkURL.apiKey)&text=\(escapedTerm)&per_page=1&format=json&nojsoncallback=1"
 
-        return URL(string:URLString)
+        return URL(string: url)
     }
 }
