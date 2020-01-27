@@ -62,7 +62,7 @@ class PhotoTableViewController: UITableViewController {
                 print("Error Searching: \(error)")
                 self.notFoundImageAlert()
             case .results(let results):
-
+                
                 let photoResult = PhotoResult()
                 photoResult.searchTerm = results.searchTerm
                 photoResult.photoURL = results.searchResult[0].flickrImageURL()
@@ -74,17 +74,19 @@ class PhotoTableViewController: UITableViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
+                
+                self.hideKeyboard()
             }
         }
     }
-
+    
     // MARK: - Alert metod
-
+    
     private func notFoundImageAlert() {
         let alert = UIAlertController(title: "Warning",
                                       message: "Image wasn't found. Try again, please.",
                                       preferredStyle: .alert)
-
+        
         let cancleAction = UIAlertAction(title: "Ok", style: .cancel)
         alert.addAction(cancleAction)
         present(alert, animated: true)
@@ -135,6 +137,11 @@ extension PhotoTableViewController: UISearchBarDelegate {
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        hideKeyboard()
+    }
+    
+    // MARK: - Help Method
+    private func hideKeyboard() {
         searchBar.resignFirstResponder()
         searchBar.setShowsCancelButton(false, animated: true)
     }

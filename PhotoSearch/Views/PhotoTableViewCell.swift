@@ -13,7 +13,7 @@ class PhotoTableViewCell: UITableViewCell {
     // MARK: - Properties
 
     private var searchLabel: UILabel!
-    private var photoImageView: UIImageView!
+    var photoImageView: ImageLoader!
 
     // MARK: - Init and Configure Methods
 
@@ -28,7 +28,12 @@ class PhotoTableViewCell: UITableViewCell {
 
     func configureWith(photoResult: PhotoResult) {
         searchLabel.text = photoResult.searchTerm
-        photoImageView.loadImage(from: photoResult.photoURL)
+
+        if let strUrl = photoResult.photoURL.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+            let imgUrl = URL(string: strUrl) {
+
+            photoImageView.loadImageWithUrl(imgUrl)
+        }
     }
 
     // MARK: - Setup UI Methods
@@ -52,8 +57,10 @@ class PhotoTableViewCell: UITableViewCell {
     }
 
     private func setupPhotoImageUI() {
-        photoImageView = UIImageView()
+        photoImageView = ImageLoader()
         contentView.addSubview(photoImageView)
+        photoImageView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        photoImageView.contentMode = .scaleAspectFit
         photoImageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             photoImageView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
