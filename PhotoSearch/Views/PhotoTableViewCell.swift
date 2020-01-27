@@ -26,9 +26,9 @@ class PhotoTableViewCell: UITableViewCell {
         super.init(coder: aDecoder)
     }
 
-    func configureWith(searchResult: SearchResult) {
-        searchLabel.text = searchResult.searchTerm
-        photoImageView.image = searchResult.searchResult[0].thumbnail
+    func configureWith(photoResult: PhotoResult) {
+        searchLabel.text = photoResult.searchTerm
+        photoImageView.loadImage(from: photoResult.photoURL)
     }
 
     // MARK: - Setup UI Methods

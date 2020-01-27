@@ -91,7 +91,7 @@ class NetworkManager {
                     let photo = Photo(photoID: photoID, farm: farm, server: server, secret: secret)
                     
                     guard
-                        let url = photo.flickrImageURL(),
+                        let url = URL(string: photo.flickrImageURL()),
                         let imageData = try? Data(contentsOf: url as URL)
                         else {
                             return nil
@@ -122,9 +122,7 @@ class NetworkManager {
         }
         
         let URLString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=\(apiKey)&text=\(escapedTerm)&per_page=1&format=json&nojsoncallback=1"
-        
-        print(URLString)
-        
+
         return URL(string:URLString)
     }
 }
