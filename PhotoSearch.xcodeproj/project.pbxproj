@@ -92,7 +92,6 @@
 				2C52F66723DF339500BC61F7 /* Extensions */,
 				2C52F66D23DF63AE00BC61F7 /* Helpers */,
 				2C52F67223DF7BC100BC61F7 /* Environment */,
-				2C03A37523D886320024E527 /* Info.plist */,
 			);
 			path = PhotoSearch;
 			sourceTree = "<group>";
@@ -153,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				2C03A36723D8862E0024E527 /* AppDelegate.swift */,
+				2C03A37523D886320024E527 /* Info.plist */,
 				2C03A37023D886320024E527 /* Assets.xcassets */,
 				2C03A37B23D886540024E527 /* LaunchScreen.storyboard */,
 			);
@@ -420,7 +420,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z8345E68DL;
-				INFOPLIST_FILE = PhotoSearch/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/PhotoSearch/Environment/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -439,7 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z8345E68DL;
-				INFOPLIST_FILE = PhotoSearch/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/PhotoSearch/Environment/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

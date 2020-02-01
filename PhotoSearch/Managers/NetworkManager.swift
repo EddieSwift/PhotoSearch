@@ -121,6 +121,8 @@ class NetworkManager {
         
         let url = "\(Constants.NetworkURL.baseURL)?method=flickr.photos.search&api_key=\(Constants.NetworkURL.apiKey)&text=\(escapedTerm)&per_page=1&format=json&nojsoncallback=1"
 
+        print(url)
+
         return URL(string: url)
     }
 }

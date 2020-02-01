@@ -31,7 +31,6 @@ class PhotoTableViewCell: UITableViewCell {
 
         if let strUrl = photoResult.photoURL.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
             let imgUrl = URL(string: strUrl) {
-
             photoImageView.loadImageWithUrl(imgUrl)
         }
     }
